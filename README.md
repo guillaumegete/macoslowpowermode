@@ -26,6 +26,3 @@ The following dialogs will be displayed to guide the user to change its Low Powe
 ![Screen capture 1](https://github.com/guillaumegete/macoslowpowermode/blob/main/low_power_mode_1.png)
 ![Screen capture 2](https://github.com/guillaumegete/macoslowpowermode/blob/main/low_power_mode_2.png)
 ![Screen capture 3](https://github.com/guillaumegete/macoslowpowermode/blob/main/low_power_mode_3.png)
-
-## Why the need to reboot?
-I did not manage to find a way to relauch the proper service that takes care of this setting. Rebooting just after modifying the setting does apply it. If you find the right service to relaunch, please feel free to provide some feedback.
