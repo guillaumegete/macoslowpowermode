@@ -1,5 +1,5 @@
 # macOS Low Power Mode script
-Script which allows a standard user account to change the Low Power Mode settings.
+Script for macOS, which allows a standard user account to change the Low Power Mode settings when run from Jamf's Self Service
 
 ## The issue
 A requirement for many companies is to prevent users to run their own Mac as an admin user. However, standard user accounts in macOS are not allowed to change the Low Power Mode settings in System Settings.
