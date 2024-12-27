@@ -95,7 +95,7 @@ energyChoice=$(dialog \
 -m "**Votre Mac devra être immédiatement redémarré pour tenir compte du nouveau réglage !**" \
 -t "Mode d'économie d'énergie" \
 --button1text "Modifier le réglage" \
--i "/System/Library/CoreServices/Batteries.app" | grep "SelectedIndex" | awk -F " : " '{print $NF}' )
+-i sf=battery.100percent.circle,colour=orange,animation=pulse.bylayer | grep "SelectedIndex" | awk -F " : " '{print $NF}' )
 
 echo "Choix d'économie d'énergie : $energyChoice"
 
@@ -130,7 +130,7 @@ dialog \
 -t "Mode d'économie d'énergie" \
 --button1text "Appliquer le réglage" \
 --button2text "Annuler" \
--i "/System/Library/CoreServices/Batteries.app"
+-i sf=battery.100percent.circle,colour=orange,animation=pulse.bylayer
 
 if [ $? = 2 ]; then
 	exit 0
@@ -152,6 +152,6 @@ dialog \
 -t "Réglage modifié !" \
 -m "Le mode d'économie d'énergie est désormais configuré sur : \n\n**$powerMode** \n\n**Pensez à redémarrer votre Mac immédiatement !**" \
 --button1text "Je redémarre dès que possible" \
--i "/System/Library/CoreServices/Batteries.app"
+-i sf=battery.100percent.circle,colour=green,animation=pulse.bylayer
 
 exit 0
