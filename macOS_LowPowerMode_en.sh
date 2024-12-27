@@ -95,7 +95,7 @@ energyChoice=$(dialog \
 -m "**Your Mac will need to be restarted immediately to apply the new setting!**" \
 -t "Low Power Mode" \
 --button1text "Change Setting" \
--i "/System/Library/CoreServices/Batteries.app" | grep "SelectedIndex" | awk -F " : " '{print $NF}' )
+-i sf=battery.100percent.circle,colour=orange,animation=pulse.bylayer | grep "SelectedIndex" | awk -F " : " '{print $NF}' )
 
 echo "Energy-saving choice: $energyChoice"
 
@@ -130,7 +130,7 @@ dialog \
 -t "Low Power Mode" \
 --button1text "Apply Setting" \
 --button2text "Cancel" \
--i "/System/Library/CoreServices/Batteries.app"
+-i sf=battery.100percent.circle,colour=orange,animation=pulse.bylayer
 
 if [ $? = 2 ]; then
 	exit 0
@@ -154,6 +154,6 @@ dialog \
 -t "Setting Modified!" \
 -m "The energy-saving mode is now configured to: \n\n**$powerMode** \n\n**Remember to restart your Mac immediately!**" \
 --button1text "I'll restart as soon as possible" \
--i "/System/Library/CoreServices/Batteries.app"
+-i sf=battery.100percent.circle,colour=green,animation=pulse.bylayer
 
 exit 0
