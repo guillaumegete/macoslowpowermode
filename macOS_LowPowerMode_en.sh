@@ -6,6 +6,8 @@
 # Change the Mac's Low Power mode setting. You can use this script 
 # to allow a non-standard user to change this setting, i.e as a Jamf Policy in Self Service
 
+# 1.0: initial release
+# 1.1: modified settings with pmset to avoid reboot. Changed dialogs to remove the need for reboot.
 
 # The SwiftDialog utility must be installed beforehand.
 # https://api.github.com/repos/bartreardon/swiftDialog/releases/latest
@@ -92,7 +94,7 @@ energyChoice=$(dialog \
 --selectvalues "$neverLoc,$onlyBatteryLoc,$onlyACLoc,$alwaysLoc" \
 --selectdefault "$currentMode" \
 --small \
--m "**Your Mac will need to be restarted immediately to apply the new setting!**" \
+-m "Select the Low Power Mode for your Mac:" \
 -t "Low Power Mode" \
 --button1text "Change Setting" \
 -i sf=battery.100percent.circle,colour=orange,animation=pulse.bylayer | grep "SelectedIndex" | awk -F " : " '{print $NF}' )
@@ -138,8 +140,8 @@ fi
 
 # Apply the new setting
 
-/usr/libexec/PlistBuddy -c "Set Battery\ Power:LowPowerMode $newBatteryMode" "$prefPath"
-/usr/libexec/PlistBuddy -c "Set AC\ Power:LowPowerMode $newACMode" "$prefPath"
+pmset -b lowpowermode $newBatteryMode
+pmset -c lowpowermode $newACMode
 
 batteryMode=$(/usr/libexec/PlistBuddy -c "Print Battery\ Power:LowPowerMode" "$prefPath")
 acMode=$(/usr/libexec/PlistBuddy -c "Print AC\ Power:LowPowerMode" "$prefPath")
@@ -152,8 +154,8 @@ echo "Current AC mode: $acMode"
 dialog \
 --small \
 -t "Setting Modified!" \
--m "The energy-saving mode is now configured to: \n\n**$powerMode** \n\n**Remember to restart your Mac immediately!**" \
---button1text "I'll restart as soon as possible" \
+-m "The energy-saving mode is now configured to: \n\n**$powerMode**" \
+--button1text "OK" \
 -i sf=battery.100percent.circle,colour=green,animation=pulse.bylayer
 
 exit 0
