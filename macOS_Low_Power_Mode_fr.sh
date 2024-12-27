@@ -7,6 +7,10 @@
 # Vous pouvez utiliser ce script pour permettre à un utilisateur non-administrateur 
 # de modifier ce réglage, par exemple en l'utilisant dans une règle Jamf dans Self Service.
 
+# 1.0: Version initiale
+# 1.1: Modification des réglages avec pmset pour éviter un redémarrage. Dialogues modifiés pour retirer la nécessité du reboot.
+
+
 # L'utilitaire SwiftDialog doit être installé au préalable.
 dialogPath="/usr/local/bin/dialog"
 
@@ -92,7 +96,7 @@ energyChoice=$(dialog \
 --selectvalues "$neverLoc,$onlyBatteryLoc,$onlyACLoc,$alwaysLoc" \
 --selectdefault "$currentMode" \
 --small \
--m "**Votre Mac devra être immédiatement redémarré pour tenir compte du nouveau réglage !**" \
+-m "Sélectionnez le mode d'économie d'énergie pour votre Mac :" \
 -t "Mode d'économie d'énergie" \
 --button1text "Modifier le réglage" \
 -i sf=battery.100percent.circle,colour=orange,animation=pulse.bylayer | grep "SelectedIndex" | awk -F " : " '{print $NF}' )
@@ -138,8 +142,8 @@ fi
 
 # Application du nouveau réglage
 
-/usr/libexec/PlistBuddy -c "Set Battery\ Power:LowPowerMode $newBatteryMode" "$prefPath"
-/usr/libexec/PlistBuddy -c "Set AC\ Power:LowPowerMode $newACMode" "$prefPath"
+pmset -b lowpowermode $newBatteryMode
+pmset -c lowpowermode $newACMode
 
 batteryMode=$(/usr/libexec/PlistBuddy -c "Print Battery\ Power:LowPowerMode" "$prefPath")
 acMode=$(/usr/libexec/PlistBuddy -c "Print AC\ Power:LowPowerMode" "$prefPath")
@@ -150,8 +154,8 @@ echo "Mode actuel sur secteur : $acMode"
 dialog \
 --small \
 -t "Réglage modifié !" \
--m "Le mode d'économie d'énergie est désormais configuré sur : \n\n**$powerMode** \n\n**Pensez à redémarrer votre Mac immédiatement !**" \
---button1text "Je redémarre dès que possible" \
+-m "Le mode d'économie d'énergie est désormais configuré sur : \n\n**$powerMode**." \
+--button1text "OK" \
 -i sf=battery.100percent.circle,colour=green,animation=pulse.bylayer
 
 exit 0
